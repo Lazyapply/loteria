@@ -1,0 +1,118 @@
+#!/bin/bash
+
+#para desactivar los colores del shel comenta la siguiente linea
+. ./colors
+
+#  n-> Sorteos  m-> Jugadores
+
+#1 Comprobamos parametros (deben ser 2, n<=15, m<=10)
+#2 Comprobamos si existen ficheros SnR, si existen, los borramos
+#3 Llamamos a los sorteos, todos seguidos
+#4 Comprobamos que estan todos los sorteos realizados
+#5 Gestionamos los SnR recien generados
+#6 Mostramos resultados
+
+
+
+
+
+declare -r SORTEOS_MAX=15
+declare -r JUGADORES_MAX=10
+#declaramos el array que vamos a usar para calcular la suma de los sorteos
+declare -a sorteosArray
+
+
+function generar_informe(){
+	:
+
+}
+
+
+
+
+#1
+if [ $# -ne 2 ]; then
+	echo "$rojo Numero de parametros incorrecto $Normal"
+	#[Mostrar uso] 
+else
+	if [ $1 -gt $SORTEOS_MAX ] || [ $2 -gt $JUGADORES_MAX ] || [ $1 -eq 0 ] || [ $2 -eq 0 ]
+	then
+	
+		echo "$rojo Rango de parametros incorrecto $Normal"
+		#[Mostrar uso]
+	else
+
+		#echo "$verde ok $Normal"
+		#2
+		
+		SnR=`ls | egrep '^S([0-9]|[0-9][0-9]|[0-9][0-9][0-9])R$'`
+		
+		if [ -n SnR ]
+		then
+			#borramos los SnR
+			echo `rm $SnR`
+		fi
+			#3
+			#empezamos a llamar a los sorteos
+			#echo "no existen"
+			cont=1
+			while [ $cont -le $1 ]; do
+				echo `./Sorteo $cont $2`
+				let cont=cont+1
+			done
+			#4 comprobamos que esten todos los SnR
+			#ls | egrep '^S([0-9]|[0-9][0-9])R$' | wc -l
+			
+			cont=1
+
+			while [ $cont -le $1 ]; do
+				nombre=S${cont}R
+				#echo $nombre
+				index=1
+				for linea in `cat $nombre | tr -s ' ' '-' `
+				do
+					
+					#comprobamos que la linea no empiece por #
+					if [ ${linea:0:1} != '#' ]; then
+					#5 
+						sorteosArray[index]=`expr ${sorteosArray[index]} + $linea`
+						#echo $linea
+						let index++
+
+					fi
+					
+				done
+				#echo "contador" $cont
+				let cont++	
+			done
+			#6 mostramos los resultados
+			#echo $rojo"Borrado de SnR desactivado!!"$Normal
+			#echo " "
+			echo $verde"    Informe de resultados"$Normal
+			echo $azul"    Numero de sorteos: "$Normal$1 $azul"Numero de jugadores: "$Normal	$2
+			echo " "
+			for i in `seq $2`
+				do
+				    echo $azul"    Jugador "$Normal$i $azul"Total premio"$Normal ${sorteosArray[$i]}" €"
+		
+			done
+			echo " "
+			echo " "
+
+		
+		#echo $SnR
+
+			
+	fi
+ 
+fi
+
+
+
+
+
+
+
+
+
+

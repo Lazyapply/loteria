@@ -1,0 +1,16 @@
+#! /bin/bash
+#Modo de uso:
+# las plabras que quiera colorear deben estar contenidas
+# entre $Color y $Normal
+
+#Colores
+Normal=$(tput sgr0)
+
+negro=$(tput setaf 0)
+rojo=$(tput setaf 1)
+verde=$(tput setaf 2)
+amarillo=$(tput setaf 3)
+azul=$(tput setaf 4)
+rosa=$(tput setaf 5)
+cyan=$(tput setaf 6)
+blanco=$(tput setaf 7)
