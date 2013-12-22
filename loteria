@@ -22,9 +22,11 @@ declare -r JUGADORES_MAX=10
 declare -a sorteosArray
 
 
-function generar_informe(){
-	:
-
+forma_uso() 
+{
+	echo $blanco"    uso: loteria [p1] [p2]"
+	echo "    p1 -> parametro 1, numero de sorteos [1, 15]"
+	echo "    p2 -> parametro 2, numero de jugadores por sorteo [1, 10]"$Normal
 }
 
 
@@ -33,12 +35,14 @@ function generar_informe(){
 #1
 if [ $# -ne 2 ]; then
 	echo "$rojo Numero de parametros incorrecto $Normal"
+	forma_uso
 	#[Mostrar uso] 
 else
 	if [ $1 -gt $SORTEOS_MAX ] || [ $2 -gt $JUGADORES_MAX ] || [ $1 -eq 0 ] || [ $2 -eq 0 ]
 	then
 	
 		echo "$rojo Rango de parametros incorrecto $Normal"
+		forma_uso
 		#[Mostrar uso]
 	else
 
